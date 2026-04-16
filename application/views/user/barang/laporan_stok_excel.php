@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DATA KARYAWAN</title>
+</head>
+<body>
+  <style type="text/css">
+  body{
+    font-family: sans-serif;
+  }
+  table{
+    margin: 20px auto;
+    border-collapse: collapse;
+  }
+  table th,
+  table td{
+    border: 1px solid #3c3c3c;
+    padding: 3px 8px;
+
+  }
+  a{
+    background: blue;
+    color: #fff;
+    padding: 8px 10px;
+    text-decoration: none;
+    border-radius: 2px;
+  }
+  .num {
+  mso-number-format:General;
+}
+.text{
+  mso-number-format:"\@";/*force text*/
+}
+  </style>
+
+  <?php
+  header("Content-type: application/vnd-ms-excel");
+  header("Content-Disposition: attachment; filename=Laporan Stok .xls");
+  ?>
+
+ 
+
+  <table border="1">
+    <tr>
+      <th>No</th>
+      
+      <th>Kode Barang</th>
+      <th>Nama Barang</th>
+      <th>Type Barang</th>
+      <th>Merk Barang</th>
+      <td>Warna</td>
+      <td>Min</td>
+      <td>Max</td>
+      <th>Stok</th>
+      <th>Satuan</th>
+      <th>Zona</th>
+      <th>Lantai</th>
+      <th>Blok</th>
+      <th>0-3 Bulan</th>
+      <th>3-6 Bulan</th>
+      <th>>6 Bulan</th>
+      <th>Ket. Stock</th>
+
+
+
+     
+                
+    </tr>
+ <tbody>
+  <?php $i=1;
+        $no=1; foreach($all_barang as $barang) { ?>
+    <tr>
+                <td><?php echo $no++; ?></td>
+                <td class="text"><?php echo $barang->Kode_Barang; ?></td>
+                <td><?php echo $barang->Nama_Barang; ?></td>
+                <td class="text"><?php echo $barang->Type_Barang; ?></td>
+                <td class="text"><?php echo $barang->merk_barang; ?></td>
+                <td><?php echo $barang->Warna_barang; ?></td>
+                
+                <td class="text"><?php echo $barang->Min; ?></td>
+                <td class="text"><?php echo $barang->Max; ?></td>
+                <td class="text"><?php echo $barang->Stok; ?></td>
+                <td > <?= strtoupper($barang->Satuan) ?></td>
+                <td class="text"><?php echo $barang->Zona; ?></td>
+                <td class="text"><?php echo $barang->Lantai; ?></td>
+                <td class="text"><?php echo $barang->Blok; ?></td>
+                <td class="text"><?php echo $barang->nol_tigabulan_qty; ?></td>
+                <td class="text"><?php echo $barang->tiga_enambulan_qty; ?></td>
+                <td class="text"><?php echo $barang->over_6bulan_qty; ?></td>
+                <td class="text"><?php echo $barang->ket_stok; ?></td>
+
+    </tr> <?php $i++; } ?>
+        </tbody>
+  </table>
+</body>
+</html>

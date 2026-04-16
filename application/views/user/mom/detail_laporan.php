@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<?php $this->load->view('user/partials/head.php') ?>
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<!-- load sidebar -->
+		<?php $this->load->view('user/partials/sidebar.php') ?>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content" data-url="<?= base_url('leads') ?>">
+				<!-- load Topbar -->
+				<?php $this->load->view('user/partials/topbar.php') ?>
+
+				<div class="container-fluid">
+				<div class="clearfix">
+					<div class="float-left">
+						<h1 class="h3 m-0 text-gray-800"><?= $title ?></h1>
+					</div>
+					<div class="float-right">
+				
+				<!--	<a href="<?= base_url('mom/export/'. $details->kode_lap) ?>" class="btn btn-danger btn-sm"><i class="fa fa-file-pdf"></i>&nbsp;&nbsp;Export</a> -->
+					<a href="<?= base_url('user/mom/laporan_proyek') ?>" class="btn btn-info btn-sm"><i class="fa fa-plus"></i>&nbsp;&nbsp;Laporan Baru </a> 
+					
+					<button  class="btn btn-secondary btn-sm" onclick="history.back()"><i class="fa fa-reply"></i> &nbsp;&nbsp;Kembali</button>					</div>
+				</div>
+				<hr>
+				<?php if ($this->session->flashdata('success')) : ?>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<?= $this->session->flashdata('success') ?>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<?php elseif($this->session->flashdata('error')) : ?>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<?= $this->session->flashdata('error') ?>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<?php endif ?>
+     <div class="row">
+		 			<div class="col-lg-12 mb-4">
+                            <!-- Project Card Example -->
+                            <div class="card shadow ">
+                                <div class="card-header py-4">
+                                    <h6 class="m-0 font-weight-bold text-primary"><?= $details->kode_lap .' - '. $details->nama_project	 ?></h6>
+                                </div>
+                    
+                            </div>
+				</div>
+
+
+</div>
+           <div class="row">
+
+                        <!-- Content Column -->
+                        <div class="col-lg-12 mb-4">
+
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">INFORMASI LAPORAN</h6>
+                                </div>
+                                <div class="card-body">
+                               	<div class="form-row">
+                                                                     
+                            		<div class="form-group col-md-4">
+											<label ><strong>Kode </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">:
+											<?= $details->kode_lap ?>
+										</div> 
+									     <div class="form-group col-md-4">
+											<label ><strong>Tanggal </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">:
+											<?= $details->tgl_laporan ?>
+										</div> 
+                            		<div class="form-group col-md-4">
+											<label ><strong>Nama Proyek</strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">:
+											<?= $details->nama_project ?>
+										</div>
+                            		<div class="form-group col-md-4">
+											<label ><strong>Berkas</strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">:
+													 <?php if (!empty($details->berkas)): ?>
+<a target="blank" href="<?php echo base_url(); ?>img/uploads/berkas1/<?= $details->berkas ?>" title="Menuju halaman google">
+  Lihat 
+</a>
+ <?php else : ?>
+                
+                    <strong> - </strong>
+                
+<?php endif; ?>
+										</div>
+								    <div class="form-group col-md-4">
+											<label ><strong>Keterangan </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">
+											:  <?= $details->keterangan_proyek ?>
+										</div>
+								    	
+								    	<div class="form-group col-md-4">
+											<label ><strong>Cretedby </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">
+											:  <?= $details->createdby ?>
+										</div> 
+																    <div class="form-group col-md-4">
+											<label ><strong>EntryTime </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">
+											:  <?= $details->createdtime ?>
+										</div>								   
+										 <?php if (!empty($details->updateby)): ?>   <div class="form-group col-md-4">
+											<label ><strong>Updateby </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">
+											:  <?= $details->updateby ?>
+										</div>								    <div class="form-group col-md-4">
+											<label ><strong>UpdateTime </strong>
+											</label>
+										</div>
+										<div class="form-group col-md-5">
+											:  <?= $details->updatetime ?>
+										</div> <?php endif; ?> 
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+        
+                    </div>
+			</div>
+			<!-- load footer -->
+			<?php $this->load->view('user/partials/footer.php') ?>
+		</div>
+	</div>
+	<?php $this->load->view('partials/js.php') ?>
+	<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+</body>
+</html>

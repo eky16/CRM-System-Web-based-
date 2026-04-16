@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<?php $this->load->view('user/partials/head.php') ?>
+
+</head>
+<?php error_reporting(0);  ?>
+<body id="page-top">
+
+
+	<div id="wrapper">
+		<!-- load sidebar -->
+		<?php $this->load->view('user/partials/sidebar.php') ?>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content" data-url="<?= base_url('asst') ?>">
+				<!-- load Topbar -->
+				<?php $this->load->view('user/partials/topbar.php') ?>
+
+				<div class="container-fluid">
+				<div class="clearfix">
+					<div class="float-left">
+						<h1 class="h3 m-0 text-gray-800"><?= $title ?></h1>
+					</div>
+					<div class="float-right"> 
+						<?php if ($this->session->login['role'] == 'admin'): ?>
+
+							<a href="<?= base_url('mod_kerja/tambah') ?>" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah</a>
+						<?php endif ?>
+					</div>
+				</div>
+				<hr>
+				<?php if ($this->session->flashdata('success')) : ?>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<?= $this->session->flashdata('success') ?>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<?php elseif($this->session->flashdata('error')) : ?>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<?= $this->session->flashdata('error') ?>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<?php endif ?>
+				<div class="card shadow">
+					<div class="card-header"><strong>CASSA DESIGN</strong></div>
+
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<td>No</td>
+										<td>Tanggal</td>
+										<td>Kode</td>
+										<td>Task</td>
+										<td>Nama Proyek</td>
+										<td>Due Date</td>
+										<td>Progres</td>
+										<td>Lihat</td>
+									
+											<td>Aksi</td>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ($all_dept_info as $mdl): ?>
+										<tr>
+											<td width="3"><?= $no++ ?></td>
+											<td width="10"><?php echo date('Y-m-d', strtotime($mdl->createdtime)); ?></td>
+											<td><?= $mdl->kode_modul ?></td>
+											<td><?= $mdl->tugas ?></td>
+											<td><?= $mdl->nama_proyek ?></td>
+											<td><?= $mdl->tempo ?></td>
+										<!--	      <td>
+                                        <?php if ($mdl->status_modul == 2) : ?>
+                                        	<input type="checkbox" checked="checked" disabled="disabled" /> Selesai
+                                      <?php elseif($mdl->status_modul == 1) : ?>
+										<input type="checkbox"  disabled="disabled" /> Proses
+                                       <?php endif; ?></td> -->
+
+                                       	<td align="center">
+                                       	<?php 
+                                       $persentasi=round($mdl->proses/$mdl->progres * 100,2); 
+                                       echo "$persentasi%";
+										?>
+										</td> 
+
+
+											<td align="center"><a target="blank_" href="<?= base_url('user/mod_kerja/detail/' . $mdl->kode_modul) ?>" class="btn btn-primary btn-sm">Lihat	<?php if(!empty($mdl->read_message)):?>
+												<span class="badge badge-danger">*</span>
+										<?php endif;?></a></a></td>
+											
+												<td align="center">
+									 <?php if ($mdl->status_modul == 1) : ?>
+													<a href="<?= base_url('user/mod_kerja/proses_modul/' . $mdl->kode_modul) ?>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Terima </a>
+									 <?php elseif($mdl->status_modul == 2) : ?>				
+									<a href="<?= base_url('user/mod_kerja/ubah_proses/' . $mdl->kode_modul) ?>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+
+												<!--	<a data-toggle="modal" style="color:white" data-target="#right_modal<?= $mdl->kode_modul ?>" class="btn btn-warning btn-sm"><i class="fa fa-upload"></i> Selesai</a> -->
+												 <?php endif; ?>
+											  
+												</td>
+											
+										</tr>
+
+<div  class="modal modal-right fade" id="right_modal<?= $mdl->kode_modul ?>" tabindex="-1" role="dialog" aria-labelledby="right_modal">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">MODUL KERJA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+<form action="<?= base_url('user/mod_kerja/save_laporan') ?>" enctype="multipart/form-data" id="form-tambah" method="POST">
+      <div class="modal-body">
+                                 <!-- Content Column -->
+
+                        <div class="col-lg-12 mb-4">
+
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary"><?= $mdl->kode_modul ?>, <?php date_default_timezone_set('Asia/Jakarta');
+                                        echo date('Y-m-d H:i:s');
+                                        ?></h6>
+                                </div>
+                                <div class="card-body">
+                                <div class="form-group col-md-12">
+                                            <label for="nama_barang">Kode Task </label>
+                                             <input onkeyup="this.value = this.value.toUpperCase()" type="text" maxlength="50" readonly name="kode_modul" placeholder="Masukkan Nama Lengkap" autocomplete="off" value="<?= $mdl->kode_modul ?>"  class="form-control">
+                                </div>
+                                <div class="form-group col-md-12">
+                                            <label for="nama_barang">Tanggal Selesai</label>
+                                             <input onkeyup="this.value = this.value.toUpperCase()" type="text" maxlength="50" readonly name="tgl_selesai" placeholder="Masukkan Nama Lengkap" autocomplete="off" value="<?php date_default_timezone_set('Asia/Jakarta');
+                                        echo date('Y-m-d H:i:s');
+                                        ?>"  class="form-control">
+                                </div>
+                                <div class="form-group col-md-12">
+                                            <label for="nama_barang">Tugas Diselesaikan</label>
+                                             <input onkeyup="this.value = this.value.toUpperCase()" type="text" maxlength="50" readonly name="" placeholder="Masukkan Nama Lengkap" autocomplete="off" value="<?php 
+                                       $persentasi=round($mdl->proses/$mdl->progres * 100,2); 
+                                       echo "$persentasi%";
+										?> (<?= $mdl->proses .'/'. $mdl->progres ?>) "  class="form-control">
+                                </div>
+                                  <div class="form-group col-md-12">
+                                            <label for="nama_barang"> Upload File</label>
+                                             <input  type="file"  name="berkas_task" placeholder="Masukkan Nama Lengkap" autocomplete="off"   class="form-control">
+                                </div>
+ 								<?php if (!empty($mdl->berkas_task)): ?>
+                                    <div class="form-group col-md-12">
+                                            <label for="nama_barang">File :</label>
+                                       <a target="blank" href="<?php echo base_url(); ?>img/uploads/berkas1/<?= $mdl->berkas_task ?>" title="Menuju halaman google">Lihat </a>
+                                </div><?php endif; ?>
+
+										<div class="form-group col-12">
+											<label>Keterangan</label>
+											<textarea  name="keterangan_modul" class="form-control" ><?php
+			                            if (!empty($mdl->keterangan_modul)) {
+			                                echo $mdl->keterangan_modul;
+			                            }
+			                            ?></textarea>
+									</div>		 
+				 <input  type="text" maxlength="50" hidden name="email" placeholder="Masukkan Nama Lengkap" autocomplete="off" value="martinsurya.ms@gmail.com"  class="form-control">
+<!--<input  type="text" maxlength="50" hidden name="email" placeholder="Masukkan Nama Lengkap" autocomplete="off" value="netbeans978@gmail.com"  class="form-control"> -->
+                               <input type="text" name="ket" placeholder="Tambah Laporan Proyek" autocomplete="off"  class="form-control" required value="Upload File Task" hidden>
+
+                                <input type="text" name="createdby" placeholder="Masukkan Kode Barang" autocomplete="off"  class="form-control" required value="<?= $this->session->login['nama'] ?>"  hidden>
+
+                                <input type="text" id="datepicker" name="createdtime" value="<?php date_default_timezone_set('Asia/Jakarta');
+                                        echo date('Y-m-d H:i:s');
+                                        ?>"  class="form-control" hidden>
+
+                                        <hr>
+
+                                    <div class="form-group col-12">
+                             <?php if ($mdl->proses == 0): ?>       	
+                                        <button type="submit" disabled class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp; Tugas Belum Tuntas</button>
+                             <?php else: ?>
+                               <button type="submit"  class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp; Proses</button><?php endif; ?>  
+                                    </div>
+   
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <!-- Color System -->
+                       
+
+                        </div>
+        </div></form>
+  
+      <div class="modal-footer modal-footer-fixed">
+       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+									<?php endforeach ?>
+								</tbody>
+							</table>
+						</div>
+					</div>				
+				</div>
+				</div>
+			</div>
+			<!-- load footer -->
+ 
+			<?php $this->load->view('user/partials/footer.php') ?>
+		</div>
+	</div>
+	<?php $this->load->view('user/partials/js.php') ?>
+	<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+</body>
+</html>

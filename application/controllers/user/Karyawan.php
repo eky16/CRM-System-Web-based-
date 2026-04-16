@@ -1,0 +1,550 @@
+<?php
+
+use Dompdf\Dompdf;
+
+class Karyawan extends CI_Controller{
+	public function __construct(){ 
+		parent::__construct();
+		if($this->session->login['role'] == ''){
+			$this->session->set_flashdata('error01', 'Sessi Berakhir, Login Kembali!');
+		redirect('login');
+		}
+		$this->data['aktif'] = 'Employee';
+		$this->load->model('M_karyawan', 'm_karyawan');
+		$this->load->model('M_asset', 'm_asset');
+		$this->load->model('M_kerja', 'm_kerja');
+		$this->load->model('M_sop', 'm_sop');
+		$this->load->model('M_employee', 'm_employee');
+		$this->load->model('M_pengguna', 'm_pengguna');
+		$this->load->helper(array('form', 'url'));
+		$this->load->library('form_validation');
+	}
+
+	public function index($id_lsp = NULL){
+		$this->data['title'] = 'Data M O M Project';
+		//$this->data['all_Mom'] = $this->m_karyawan->lihat();
+		$this->data['no'] = 1;
+				$this->data['count_task'] = count($this->m_kerja->my_modul()); // get resutl 
+		$this->data['view_task'] = $this->m_kerja->my_modul();
+   	$this->data['all_leads_project'] = $this->m_karyawan->get_lsp();
+
+    $id_lsp = $this->input->post('id_lsp');
+    $this->data['all_Mom'] = $this->m_karyawan->view_mom_filter($id_lsp); 
+
+		$this->load->view('user/karyawan/lihat', $this->data);
+	}
+	public function sidebar(){
+		$id = $this->session->login['kode'];
+		$this->data['emp'] = $this->m_karyawan->view_profile_employee($id);
+	
+		$this->load->view('user/partials/sidebar', $this->data);
+	}
+	public function detail($id){
+		$this->data['title'] = 'Profil Karyawan';
+		$id = $this->session->login['kode'];
+		$this->data['emp'] = $this->m_karyawan->view_profile_employee($id);
+		//$this->data['emp'] = $this->m_karyawan->view_profile($id);
+			//	$this->data['count_task'] = count($this->m_kerja->my_modul()); // get resutl 
+		//$this->data['view_task'] = $this->m_kerja->my_modul();
+
+		//$this->data['asst'] = $this->m_karyawan->view_myasset_id($id); 
+		//$this->data['kode_transaksi'] = $this->m_karyawan->kode_transaksi();
+		//$this->data['all_asset'] = $this->m_asset->tampil_asset();
+		$this->load->view('user/karyawan/details', $this->data);
+	}
+
+	public function proses_ubah_password(){
+			// Ambil data dari form
+            $kode = $this->input->post('kode');
+            $username = $this->input->post('username');
+            $new_password = $this->input->post('password');
+
+			//$atdnc_data['kode'] = $this->input->post('kode');
+			//$atdnc_data['username'] = $this->input->post('username');
+			//$atdnc_data['password'] = $this->input->post('password');
+      //	$atdnc_data['updateby'] = $this->input->post('updateby');
+      //	$atdnc_data['updatetime'] = $this->input->post('updatetime');
+
+			// Hash password baru sebelum menyimpan ke database
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+            // Data yang akan disimpan ke tabel employee_login
+            $atdnc_data = [
+            'kode' => $kode,
+            'username' => $username,
+            'password' => $hashed_password,
+        ];
+
+      	$this->m_karyawan->save_user_login($atdnc_data); //simpan ke tabel jenis izin
+
+      		$data['user'] = $this->input->post('updateby');
+			$data['waktu'] = $this->input->post('updatetime');
+
+			$data['ket'] = $this->input->post('ket');
+			$data['kode'] = $this->input->post('kode');
+			$this->m_karyawan->tambah_log($data); //simpan ke tabel jenis izin
+
+
+			$this->session->set_flashdata('error', 'Data <strong>Gagal</strong> Diubah!');
+			$this->session->set_flashdata('success', 'Data <strong>Berhasil</strong> Diubah!');
+			redirect('karyawan/lihat_user');
+		
+        //echo '<pre>';
+       // print_r ($_POST);
+       // echo '</pre>';
+       // exit;
+
+	}
+
+	public function ubah_password($EmployeeID) {
+        $this->data['title'] = 'Ubah Password';
+        $id = $this->session->login['kode'];
+        $this->data['emp'] = $this->m_karyawan->view_user_login($EmployeeID);
+
+       
+
+        $this->load->view('user/karyawan/ubah_password', $this->data);
+        echo '<pre>';
+        print_r ($_POST);
+        echo '</pre>';
+        exit;
+    }
+
+
+	public function lihat_filter_goal($id_lsp = NULL){
+		$this->data['title'] = 'Data M O M Project';
+		//$this->data['all_Mom'] = $this->m_karyawan->lihat();
+		$this->data['no'] = 1;
+
+   	$this->data['all_leads_project'] = $this->m_karyawan->get_lsp();
+
+    $id_lsp = $this->input->post('id_lsp');
+    $this->data['all_Mom'] = $this->m_karyawan->view_mom_all_goal_fillter($id_lsp); 
+
+		$this->load->view('karyawan/lihat_goal', $this->data);
+	}
+	public function lihat_semua($EmployeeID = NULL){
+		$this->data['title'] = 'KARYAWAN CASSA DESIGN';
+		//$this->data['all_Mom'] = $this->m_karyawan->lihat();
+		$this->data['no'] = 1;
+				$this->data['count_task'] = count($this->m_kerja->my_modul()); // get resutl 
+		$this->data['view_task'] = $this->m_kerja->my_modul();
+   //	$this->data['all_leads_project'] = $this->m_karyawan->get_lsp();
+
+   // $id_lsp = $this->input->post('id_lsp');
+    $this->data['all_employee'] = $this->m_karyawan->view_karyawan_all($EmployeeID); 
+
+		$this->load->view('user/karyawan/lihat', $this->data); 
+	}
+
+		public function lihat_semua_nonaktif($EmployeeID = NULL){
+		$this->data['title'] = 'KARYAWAN NON-AKTIF CASSA DESIGN';
+		//$this->data['all_Mom'] = $this->m_karyawan->lihat();
+		$this->data['no'] = 1;
+						$this->data['count_task'] = count($this->m_kerja->my_modul()); // get resutl 
+		$this->data['view_task'] = $this->m_kerja->my_modul();
+
+   //	$this->data['all_leads_project'] = $this->m_karyawan->get_lsp();
+
+   // $id_lsp = $this->input->post('id_lsp');
+    $this->data['all_employee'] = $this->m_karyawan->view_karyawan_all_non($EmployeeID); 
+
+		$this->load->view('karyawan/lihat', $this->data); 
+	}
+	public function lihat_semua_goal($id_lsp = NULL){
+		$this->data['title'] = 'Data M O M Project';
+		//$this->data['all_Mom'] = $this->m_karyawan->lihat();
+		$this->data['no'] = 1;
+
+   	$this->data['all_leads_project'] = $this->m_karyawan->get_lsp();
+
+    $id_lsp = $this->input->post('id_lsp');
+    $this->data['all_Mom'] = $this->m_karyawan->view_mom_all_goal($id_lsp); 
+
+		$this->load->view('karyawan/lihat_goal', $this->data);
+	}
+	public function tambah($id = NULL){
+		if ($this->session->login['role'] == 'petugas'){
+			$this->session->set_flashdata('error', 'Tambah data hanya untuk admin!');
+			redirect('dashboard');
+		}
+		
+		$dariDB = $this->m_karyawan->cekkodeemployee();
+
+		$nourut = substr($dariDB, 1, 2);
+      $kodenikSekarang = $nourut + 1;
+      $this->data['kode_nik']  = $kodenikSekarang ;
+
+		$this->data['atasan'] = $this->m_karyawan->get_atasan()->result();
+	//	$this->data['department'] = $this->m_karyawan->get3();
+
+		$all_dept_info = $this->m_karyawan->get3();
+        // get all department info and designation info
+        foreach ($all_dept_info as $v_dept_info) {
+           $this->data['all_department_info'][$v_dept_info->department] = $this->m_karyawan->get_add_department_by_id($v_dept_info->id_dept);
+        }
+
+		$this->data['all_status_mom'] = $this->m_karyawan->get3();
+		$this->data['all_leads_project'] = $this->m_karyawan->get_leads();
+		$this->data['title'] = 'DATA KARYAWAN';
+	//	$this->data['kode_momproject'] = $this->m_karyawan->kode_momproject();
+		$this->load->view('karyawan/tambah', $this->data);
+	}
+
+public function ubah($id){
+		if ($this->session->login['role'] == 'petugas'){
+			$this->session->set_flashdata('error', 'Ubah data hanya untuk admin!');
+			redirect('dashboard');
+		}
+						$this->data['count_task'] = count($this->m_kerja->my_modul()); // get resutl 
+		$this->data['view_task'] = $this->m_kerja->my_modul();
+		$this->data['atasan'] = $this->m_karyawan->get_atasan()->result();
+			$all_dept_info = $this->m_karyawan->get3();
+        // get all department info and designation info
+        foreach ($all_dept_info as $v_dept_info) {
+           $this->data['all_department_info'][$v_dept_info->department] = $this->m_karyawan->get_add_department_by_id($v_dept_info->id_dept);
+        }
+		$this->data['title'] = 'Ubah Data Karyawan';
+		$this->data['emp'] = $this->m_karyawan->view_profile($id); 
+
+		$this->load->view('user/karyawan/ubah', $this->data);
+	}
+	public function proses_tambah(){
+		if ($this->session->login['role'] == 'petugas'){
+			$this->session->set_flashdata('error', 'Tambah data hanya untuk admin!');
+			redirect('dashboard');
+		}
+
+
+if (!empty($_FILES['berkas']['name'])) {
+		$config['upload_path']          = './img/uploads/foto_karyawan';
+		$config['allowed_types']        = 'gif|jpg|png|JPG|pdf|jpeg';
+		$config['max_size']             = 5000;
+		//$config['max_width']            = 1024;
+		//$config['max_height']           = 768;
+		$config['encrypt_name']			= TRUE;
+		$this->load->library('upload', $config);
+		$this->upload->do_upload('berkas');
+		 $file1 = $this->upload->data();
+		//    echo '<pre>';
+     //   print_r ($file1);
+     //   echo '</pre>';
+     //   exit;
+
+			$atdnc_data['foto'] = $this->upload->data("file_name");
+			$atdnc_data['ukuran_berkas'] = $this->upload->data('full_path');
+
+}
+			$atdnc_data['nama_karyawan'] = $this->input->post('nama_karyawan');
+			$atdnc_data['gender'] = $this->input->post('gender');
+      	$atdnc_data['nomor_ktp'] = $this->input->post('nomor_ktp');
+      	$atdnc_data['ulang_tahun'] = $this->input->post('ulang_tahun');
+			$atdnc_data['status_kawin'] = $this->input->post('status_kawin');
+      	$atdnc_data['email'] = $this->input->post('email');
+      	$atdnc_data['no_telp1'] = $this->input->post('no_telp1');
+			$atdnc_data['no_telp2'] = $this->input->post('no_telp2');
+
+			$atdnc_data['no_telp_darurat'] = $this->input->post('no_telp_darurat');
+			$atdnc_data['hubungan'] = $this->input->post('hubungan');
+
+			$Emailkantor = $this->input->post('email_kantor');
+			$buntutemail = $this->input->post('buntut_email');
+        	$atdnc_data['email_kantor'] = $Emailkantor.''.$buntutemail;
+
+      	$palanik = $this->input->post('EmployeeID');
+      	$buntutnik = $this->input->post('buntut_nik');
+			$atdnc_data['EmployeeID'] = $palanik.''.$buntutnik;
+
+
+
+      	$atdnc_data['nomor_ktp'] = $this->input->post('nomor_ktp');
+      	$atdnc_data['alamat_ktp'] = $this->input->post('alamat_ktp');
+			$atdnc_data['alamat_domisili'] = $this->input->post('alamat_domisili');
+      	$atdnc_data['bank'] = $this->input->post('bank');
+      	$atdnc_data['ats_nama'] = $this->input->post('ats_nama');
+			$atdnc_data['no_rek'] = $this->input->post('no_rek');
+      	$atdnc_data['bpjs_kes'] = $this->input->post('bpjs_kes');
+      	$atdnc_data['bpjs_ket'] = $this->input->post('bpjs_ket');
+      	$atdnc_data['npwp'] = $this->input->post('npwp');
+      	$atdnc_data['tgl_bergabung'] = $this->input->post('tgl_bergabung');
+			$atdnc_data['perjanjian_kerja'] = $this->input->post('perjanjian_kerja');
+
+      	$atdnc_data['divisi'] = $this->input->post('divisi');
+			$atdnc_data['supervisorID'] = $this->input->post('supervisorID');
+      	$atdnc_data['akhir_kerja'] = $this->input->post('akhir_kerja');
+
+      	$atdnc_data['Active'] = $this->input->post('Active');
+      	//$atdnc_data['resign_date'] = $this->input->post('resign_date');
+      	//$atdnc_data['alasan_resign'] = $this->input->post('alasan_resign');
+
+      	$atdnc_data['createdby'] = $this->input->post('createdby');
+      	$atdnc_data['createdtime'] = $this->input->post('createdtime');
+      	$atdnc_data['updateby'] = $this->input->post('updateby');
+      	$atdnc_data['updatetime'] = $this->input->post('updatetime');
+			$this->m_karyawan->save_project($atdnc_data);
+
+			//data untuk log
+      	$data['user'] = $this->input->post('user');
+			$data['waktu'] = $this->input->post('waktu');
+			$nama =  $this->input->post('nama_karyawan');
+			$keterangan =  $this->input->post('ket');
+			$data['ket'] = $keterangan.' '.$nama;
+			$data['kode'] = $palanik.''.$buntutnik;
+
+			$this->m_karyawan->tambah_log($data); //simpan ke tabel log
+
+			//tambah user login
+      	$atdnc_login['kode'] = $palanik.''.$buntutnik;
+      	$atdnc_login['nama'] = $this->input->post('nama_karyawan');
+      	$atdnc_login['username'] = $palanik.''.$buntutnik;
+      	$atdnc_login['password'] = 'alba123';
+			$this->m_karyawan->save_employee_login($atdnc_login);
+
+			$this->session->set_flashdata('error', 'Data Mom <strong>Gagal</strong> Ditambahkan!');
+			$this->session->set_flashdata('success', 'Data Mom Project <strong>Berhasil</strong> Ditambahkan!');
+			redirect('karyawan/lihat_semua');
+		
+	
+      //  echo '<pre>';
+     //   print_r ($_POST);
+      //  echo '</pre>';
+     //   exit;
+
+	}
+		public function proses_update(){
+
+
+if (!empty($_FILES['berkas']['name'])) {
+		$config['upload_path']          = './img/uploads/foto_karyawan';
+		$config['allowed_types']        = 'gif|jpg|png|JPG|pdf|jpeg';
+		$config['max_size']             = 5000;
+		//$config['max_width']            = 1024;
+		//$config['max_height']           = 768;
+		$config['encrypt_name']			= TRUE;
+		$this->load->library('upload', $config);
+		$this->upload->do_upload('berkas');
+		 $file1 = $this->upload->data();
+		//    echo '<pre>';
+     //   print_r ($file1);
+     //   echo '</pre>';
+     //   exit;
+
+			$atdnc_data['foto'] = $this->upload->data("file_name");
+			$atdnc_data['ukuran_berkas'] = $this->upload->data('full_path');
+
+}
+			$atdnc_data['nama_karyawan'] = $this->input->post('nama_karyawan');
+			$atdnc_data['gender'] = $this->input->post('gender');
+      	$atdnc_data['nomor_ktp'] = $this->input->post('nomor_ktp');
+      	$atdnc_data['ulang_tahun'] = $this->input->post('ulang_tahun');
+			$atdnc_data['status_kawin'] = $this->input->post('status_kawin');
+      	$atdnc_data['email'] = $this->input->post('email');
+      	$atdnc_data['email_kantor'] = $this->input->post('email_kantor');
+      	$atdnc_data['no_telp1'] = $this->input->post('no_telp1');
+			$atdnc_data['no_telp2'] = $this->input->post('no_telp2');
+			$atdnc_data['no_telp_darurat'] = $this->input->post('no_telp_darurat');
+			$atdnc_data['hubungan'] = $this->input->post('hubungan');
+      	$atdnc_data['nomor_ktp'] = $this->input->post('nomor_ktp');
+      	$atdnc_data['alamat_ktp'] = $this->input->post('alamat_ktp');
+			$atdnc_data['alamat_domisili'] = $this->input->post('alamat_domisili');
+      	$atdnc_data['bank'] = $this->input->post('bank');
+      	$atdnc_data['ats_nama'] = $this->input->post('ats_nama');
+			$atdnc_data['no_rek'] = $this->input->post('no_rek');
+      	$atdnc_data['bpjs_kes'] = $this->input->post('bpjs_kes');
+      	$atdnc_data['bpjs_ket'] = $this->input->post('bpjs_ket');
+      	$atdnc_data['npwp'] = $this->input->post('npwp');
+      	$atdnc_data['tgl_bergabung'] = $this->input->post('tgl_bergabung');
+			$atdnc_data['perjanjian_kerja'] = $this->input->post('perjanjian_kerja');
+      	$atdnc_data['EmployeeID'] = $this->input->post('EmployeeID');
+      	$atdnc_data['divisi'] = $this->input->post('divisi');
+			$atdnc_data['supervisorID'] = $this->input->post('supervisorID');
+      	$atdnc_data['akhir_kerja'] = $this->input->post('akhir_kerja');
+
+      	$atdnc_data['Active'] = $this->input->post('Active');
+      	$atdnc_data['resign_date'] = $this->input->post('resign_date');
+      	$atdnc_data['alasan_resign'] = $this->input->post('alasan_resign');
+
+      	$atdnc_data['createdby'] = $this->input->post('createdby');
+      	$atdnc_data['createdtime'] = $this->input->post('createdtime');
+      	$atdnc_data['updateby'] = $this->input->post('updateby');
+      	$atdnc_data['updatetime'] = $this->input->post('updatetime');
+
+			$this->m_karyawan->save_project($atdnc_data);
+			//untuk log
+      	$data['user'] = $this->input->post('user');
+			$data['waktu'] = $this->input->post('waktu');
+			$nama =  $this->input->post('nama_karyawan');
+			$keterangan =  $this->input->post('ket');
+			$data['ket'] = $keterangan.' '.$nama;
+			$data['kode'] = $this->input->post('EmployeeID');
+			$this->m_karyawan->tambah_log($data); //simpan ke tabel log
+
+			$this->session->set_flashdata('error', 'Data Anda <strong>Gagal</strong> Ditambahkan!');
+			$this->session->set_flashdata('success', 'Data Anda <strong>Berhasil</strong> Diubah!');
+			
+		redirect(base_url()."user/karyawan/detail/".$data['kode']);
+	
+      //  echo '<pre>';
+     //   print_r ($_POST);
+      //  echo '</pre>';
+     //   exit;
+
+	}
+	public function simpan_berkas(){
+		if ($this->session->login['role'] !== 'karyawan'){
+			$this->session->set_flashdata('error', 'Tambah data hanya untuk admin!');
+			redirect('dashboard');
+		}
+
+
+		$config['upload_path']          = './img/uploads/doc_karyawan';
+		$config['allowed_types']        = 'gif|jpg|png|JPG|pdf|jpeg';
+		$config['max_size']             = 5000;
+		//$config['max_width']            = 1024;
+		//$config['max_height']           = 768;
+		$config['encrypt_name']			= TRUE;
+		$this->load->library('upload', $config);
+		// $file1 = $this->upload->data();
+		 //       echo '<pre>';
+       // print_r ($_POST);
+       // echo '</pre>';
+      // exit;
+if (!empty($_FILES['berkas_cv']['name'])) {
+			$this->upload->do_upload('berkas_cv');
+			$atdnc_data['berkas_cv'] = $this->upload->data("file_name");
+		}
+if (!empty($_FILES['berkas_ktp']['name'])) {
+			$this->upload->do_upload('berkas_ktp');
+			$atdnc_data['berkas_ktp'] = $this->upload->data("file_name");
+		}
+if (!empty($_FILES['berkas_kk']['name'])) {
+			$this->upload->do_upload('berkas_kk');
+			$atdnc_data['berkas_kk'] = $this->upload->data("file_name");
+		}
+if (!empty($_FILES['berkas_ijazah']['name'])) {
+			$this->upload->do_upload('berkas_ijazah');
+			$atdnc_data['berkas_ijazah'] = $this->upload->data("file_name");
+}
+if (!empty($_FILES['berkas_perjanjian1']['name'])) {
+			$this->upload->do_upload('berkas_perjanjian1');
+			$atdnc_data['berkas_perjanjian1'] = $this->upload->data("file_name");
+} 
+if (!empty($_FILES['berkas_perjanjian2']['name'])) {
+			$this->upload->do_upload('berkas_perjanjian2');
+			$atdnc_data['berkas_perjanjian2'] = $this->upload->data("file_name");
+}
+if (!empty($_FILES['berkas_perjanjian3']['name'])) {
+			$this->upload->do_upload('berkas_perjanjian3');
+			$atdnc_data['berkas_perjanjian3'] = $this->upload->data("file_name");
+}
+			$userid = $this->input->post('userid');
+      	$atdnc_data['EmployeeID'] = $this->input->post('EmployeeID');
+			$this->m_karyawan->save_doc($atdnc_data);
+
+
+			$this->session->set_flashdata('error', 'Berkas Anda  <strong>Gagal</strong> Ditambahkan!');
+			$this->session->set_flashdata('success', 'Berkas Anda <strong>Berhasil</strong> Ditambahkan!');
+			redirect(base_url()."user/karyawan/detail/".$userid);
+	
+      //  echo '<pre>';
+     //   print_r ($_POST);
+      //  echo '</pre>';
+     //   exit;
+
+	}
+	public function simpan_asset(){
+		if ($this->session->login['role'] == 'petugas'){
+			$this->session->set_flashdata('error', 'Tambah data hanya untuk admin!');
+			redirect('dashboard');
+		}
+			$atdnc['status'] = 'TERPAKAI';
+			$atdnc['kode_asset'] = $this->input->post('kode_asset');
+			$this->m_karyawan->update_asset_terpakai($atdnc);
+
+			$atdnc_data['kd_transaksi'] = $this->input->post('kd_transaksi');
+			$atdnc_data['EmployeeID'] = $this->input->post('EmployeeID');
+      	$atdnc_data['kode_asset'] = $this->input->post('kode_asset');
+      	$atdnc_data['createdtime'] = $this->input->post('createdtime');
+			$atdnc_data['createdby'] = $this->input->post('createdby');
+			$this->m_karyawan->save_inventaris($atdnc_data);
+
+			$userid = $this->input->post('userid', TRUE);
+			$this->session->set_flashdata('error', 'Data Mom <strong>Gagal</strong> Ditambahkan!');
+			$this->session->set_flashdata('success', 'Data Mom Project <strong>Berhasil</strong> Ditambahkan!');
+			redirect(base_url()."karyawan/detail/".$userid);
+		
+      //  echo '<pre>';
+     //   print_r ($_POST);
+      //  echo '</pre>';
+     //   exit;
+
+	}
+    
+
+
+
+
+	public function proses_ubah(){
+		if ($this->session->login['role'] == 'petugas'){
+			$this->session->set_flashdata('error', 'Tambah data hanya untuk admin!');
+			redirect('dashboard');
+		}
+			$atdnc_data['id_lsp'] = $this->input->post('id_lsp');
+        $atdnc_data['nama_pic'] = $this->input->post('nama_pic');
+        $atdnc_data['no_telp'] = $this->input->post('no_telp');
+        $atdnc_data['email'] = $this->input->post('email');
+        $atdnc_data['nama_project'] = $this->input->post('nama_project');
+        $atdnc_data['alamat_project'] = $this->input->post('alamat_project');
+        $atdnc_data['tlp_kantor'] = $this->input->post('tlp_kantor');
+        $atdnc_data['alamat_kantor'] = $this->input->post('alamat_kantor');
+        $atdnc_data['updateby'] = $this->input->post('updateby');
+        $atdnc_data['updatetime'] = $this->input->post('updatetime');
+      //  echo '<pre>';
+     //   print_r ($_POST);
+     //   echo '</pre>';
+      //  exit;
+
+        $this->m_karyawan->save_project($atdnc_data);
+        
+       	$this->session->set_flashdata('error', 'Data Mom <strong>Gagal</strong> Ditambahkan!');
+        $this->session->set_flashdata('success', 'Data Mom Project <strong>Berhasil</strong> Diubah!');
+        redirect('karyawan'); //redirect page
+		
+	}
+	public function hapus($id){
+		if ($this->session->login['role'] == 'petugas'){
+			$this->session->set_flashdata('error', 'Hapus data hanya untuk admin!');
+			redirect('dashboard');
+		}
+
+			date_default_timezone_set('Asia/Jakarta');
+		  	$data['user'] = $this->session->login['nama'];
+			$data['waktu'] = date('Y-m-d H:i:s');
+			$data['ket'] = 'Hapus Karyawan';
+			$data['kode'] = $id;
+			$this->m_asset->tambah_log($data); //simpan ke tabel jenis izin
+
+		if($this->m_karyawan->hapus($id)){
+			$this->session->set_flashdata('success', 'Data Mom <strong>Berhasil</strong> Dihapus!');
+			redirect('karyawan/lihat_semua');
+		} else {
+			$this->session->set_flashdata('error', 'Data Mom <strong>Gagal</strong> Dihapus!');
+			redirect('karyawan');
+		}
+	}
+
+	public function export($id){
+	//	$dompdf = new Dompdf();
+		$this->data['all_Mom'] = $this->m_karyawan->export_mom($id); 
+		$this->data['title'] = 'MINUTES OF MEETING';
+		$this->data['no'] = 1;
+
+		$this->load->library('pdf'); // change to pdf_ssl for ssl
+		$filename =  'M O M'.' '. $this->data['all_Mom']->status . ' ' . $this->data['all_Mom']->nama_project ;
+		$html = $this->load->view('mom/report', $this->data, true);
+		$this->pdf->create($html, $filename);
+	}
+
+
+
+}
