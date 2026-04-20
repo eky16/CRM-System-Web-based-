@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$config['google_maps_api_key'] = 'API_KEY_BARU';
 
 /*
 |--------------------------------------------------------------------------
