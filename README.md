@@ -1,57 +1,38 @@
-# Aplikasi Inventori Dengan Framework CodeIgniter 3 & Template SB Admin 2
+# Aplikasi CRM Dengan Framework CodeIgniter 3 & Template SB Admin 2
 
 ### Kenapa saya membuat aplikasi ini?
 
-Ini merupakan aplikasi yang akan saya jadikan sebagai portfolio. Sebenarnya saya sudah banyak membuat banyak aplikasi berbasis web, namun saya lupa membackupnya. Jadi saya harus mengulang lagi dari awal demi portfolio. Selain sebagai portfolio, contoh aplikasi ini juga bisa saya jadikan sebagai latihan untuk mengasah skill koding saya.
+Aplikasi ini dikembangkan untuk mengatasi proses bisnis yang masih dilakukan secara manual, khususnya dalam pengelolaan data pelanggan dan tracking aktivitas. Proses manual tersebut sering menyebabkan keterlambatan, ketidakteraturan data, dan risiko human error.
+
+Dengan adanya sistem ini, proses menjadi lebih terstruktur, terintegrasi, dan dapat dimonitor secara real-time, sehingga meningkatkan efisiensi operasional dan akurasi data.
 
 ### Untuk siapa sih aplikasi ini?
 
-Untuk kalian semua yang mau belajar atau yang butuh inspirasi tentang aplikasi berbasis web terutama yang menggunakan PHP dan MySQL.
+Aplikasi ini dirancang untuk membantu perusahaan dalam mengelola data pelanggan, memantau aktivitas, dan meningkatkan efisiensi operasional melalui sistem yang terintegrasi dan mudah digunakan.
 
 ### Boleh ga memodifikasi aplikasi ini?
-
-Jawabanya adalah **sangat sangat boleh!** Tapi ingat tetap sertakan siapa yang membuat aplikasi ini. 
+ 
+Aplikasi ini dapat dimodifikasi dan digunakan sesuai kebutuhan. Namun, diharapkan tetap mencantumkan credit kepada pembuat asli serta tidak menghapus informasi kepemilikan yang ada.
 
 ### Kalo di jual boleh ga?
 
-**Dilarang Keras!** Karena ini aplikasi bener bener gratis dan bebas bagi siapapun yang menggunakan dan ingin memodifikasinya.
+**Dilarang Keras!** Aplikasi ini tidak diperbolehkan untuk diperjualbelikan secara langsung tanpa izin dari pembuat. Namun, aplikasi dapat digunakan sebagai referensi atau dikembangkan lebih lanjut sesuai kebutuhan dengan tetap mencantumkan credit.
 
 ### Fiturnya apa saja sih?
-Untuk fiturnya masih sangas sederhana, contohnya sebagai berikut
-1. **Modul Authentikasi**
-   
-   Di modul ini saya membuat fitur untuk login dan logout.
-   
-2. **Modul Data Barang**
-   
-   Di modul ini saya membuat fitur untuk melihat, menambah, mengubah, menghapus dan meng-ekspor data barang.
-   
-3. **Modul Data Customer**
 
-   Di modul ini saya membuat fitur untuk melihat, menambah, mengubah, menghapus dan meng-ekspor data Cutomer.
-   
-4. **Modul Data Supplier**
+Aplikasi ini dilengkapi dengan fitur lengkap untuk mendukung operasional bisnis, seperti:
 
-   Di modul ini saya membuat fitur untuk melihat, menambah, mengubah, menghapus dan meng-ekspor data Supplier.
-   
-5. **Modul Data Petugas**
+1. Pengelolaan data pelanggan secara terpusat
+2. Tracking aktivitas dan monitoring real-time
+3. Dashboard laporan untuk analisis data
+4. Manajemen user dan role akses
+5. Notifikasi dan update status proses
+6. Export data ke Excel/PDF
+7. Fitur pencarian dan filter data yang fleksibel
 
-   Di modul ini saya membuat fitur untuk melihat, menambah, mengubah, menghapus dan meng-ekspor data Petugas.
-   
-6. **Modul Transaksi Penerimaan**
-
-   Di modul ini saya membuat fitur untuk melihat, menambah, menghapus dan meng-ekspor transaksi penerimaan.
-   
-7. **Modul Transaksi Pengeluaran**
-
-   Di modul ini saya membuat fitur untuk melihat, menambah, menghapus dan meng-ekspor transaksi pengeluaran.
-
-8. **Modul Manajemen Akun**
-
-   Di modul ini saya hanya membuat fitur untuk melihat dan menghapus akun.
-	 
+ 	 
 ### Role
-Terdapat Dua Role yaitu `admin` & `petugas`
+Terdapat Dua Role yaitu `admin` & `karyawan`
 
 ### Instalasi & Konfigurasi
 
@@ -64,9 +45,9 @@ Untuk cara instalasi dan konfigurasi caranya sangat mudah
 5. Ubah isi dari variable `$config['base_url']` dengan `http://localhost/namafolder/`
 6. Untuk `namafolder` silahkan kalian ganti sesuai nama folder dari aplikasi ini di komputer atau laptop kalian
 7. Import `db_inventori.sql` ke database milik kalian
-8. Untuk login `admin` kalian bisa menggunakan username = `nugrohoff` dan password `pwd_nugroho`
-9. Untuk login `petugas` kalian bisa menggunakan username = `PTGS35` dan password `pwd_fanani`
+8. Untuk login `admin` kalian bisa menggunakan username = `superadmin` dan password `pw_admin`
+9. Untuk login `karyawan` kalian bisa menggunakan username = `karyawan12` dan password `pw_karyawan12`
 
 ### Tentang Saya
 
-Fakhrul Fanani Nugroho siswa Kelas 12 Jurusan Teknik Komputer Informatika di SMK Negeri 1 Wanareja. https://www.instagram.com/nugrohospace/
+Saya adalah seorang IT Developer yang berfokus pada pengembangan aplikasi berbasis web. Memiliki pengalaman dalam membangun sistem internal perusahaan dari nol, termasuk perancangan database, pengembangan fitur, serta optimasi sistem untuk meningkatkan efisiensi operasional.

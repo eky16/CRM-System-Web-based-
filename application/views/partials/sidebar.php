@@ -1,10 +1,10 @@
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('dashboard') ?>"	>
-				<div class="sidebar-brand-icon rotate-n-11">
+			<!--	<div class="sidebar-brand-icon rotate-n-11">
 					<img style="width: 60px;height: 60px" src="<?php echo base_url(); ?>img/logo01.png"  alt="" class="img-circle"/>
-				</div>
-				<div class="sidebar-brand-text mx-3">Alba<sup>Unggul</sup></div>
+				</div>-->
+				<div class="sidebar-brand-text mx-3">CRM</div>
 			</a>
                  <br>
 			<hr class="sidebar-divider my-0">
@@ -21,12 +21,12 @@
                     <span>Kalender</span></a>
             </li> -->
 
-			<hr class="sidebar-divider">	
+		<!--	<hr class="sidebar-divider">
 			<div class="sidebar-heading">
 				Master Data
-			</div>
+			</div> -->
 			<!-- Master Data -->
-           	<li class="nav-item <?= $aktif == 'customer' ? 'active' : '' ?>">
+        <!--   	<li class="nav-item <?= $aktif == 'customer' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-box"></i>
@@ -40,9 +40,9 @@
                      <a class="collapse-item" href="<?= base_url('customer/nonaktif') ?>">Non-Aktif</a>
                 </div>
                 </div>
-            </li>
+            </li>-->
 
-            <li class="nav-item <?= $aktif == 'customer' ? 'active' : '' ?>">
+        <!--    <li class="nav-item <?= $aktif == 'customer' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-box"></i>
@@ -56,9 +56,9 @@
                      <a class="collapse-item" href="<?= base_url('customer/nonaktif') ?>">Non-Aktif</a>
                 </div>
                 </div>
-            </li>
+            </li> -->
 
-            <li class="nav-item <?= $aktif == 'sales' ? 'active' : '' ?>">
+         <!--   <li class="nav-item <?= $aktif == 'sales' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sales"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-users"></i>
@@ -72,11 +72,11 @@
                     <a class="collapse-item" href="<?= base_url('sales/nonaktif') ?>">Non-Aktif</a>
                 </div>
                 </div>
-            </li>
+            </li>-->
 
 
             
-                <li class="nav-item <?= $aktif == 'kendaraan' ? 'active' : '' ?>">
+             <!--   <li class="nav-item <?= $aktif == 'kendaraan' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kendaraan"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-box"></i>
@@ -90,9 +90,9 @@
                      <a class="collapse-item" href="<?= base_url('kendaraan/nonaktif') ?>">Non-Aktif</a>
                 </div>
                 </div>
-            </li>
+            </li>-->
 
-            <li class="nav-item <?= $aktif == 'msa' ? 'active' : '' ?>">
+        <!--    <li class="nav-item <?= $aktif == 'msa' ? 'active' : '' ?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" id="droptog_approved1" data-target="#msa"
         aria-expanded="false" aria-controls="msa">
         <i class="fas fa-fw fa fa-list-alt"></i>
@@ -109,8 +109,8 @@
 
 
     </div>
-</li>
-        <li class="nav-item <?= $aktif == 'msp' ? 'active' : '' ?>">
+</li> -->
+     <!--   <li class="nav-item <?= $aktif == 'msp' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" id="droptog_approved1" data-target="#msp"
                     aria-expanded="false" aria-controls="msp">
                     <i class="fas fa-fw fa fa-list-alt"></i>
@@ -126,15 +126,15 @@
                    <a class="collapse-item laporan-msp-act" href="<?= base_url('wo/laporan_msp_01') ?>">Laporan MSP 01 </a>
                     </div>
                 </div>
-            </li>
+            </li>-->
 
-            <li class="nav-item <?= $aktif == 'master_wo' ? 'active' : '' ?>"> 
+          <!--  <li class="nav-item <?= $aktif == 'master_wo' ? 'active' : '' ?>"> 
                 <a class="nav-link" href="<?= base_url('wo/master_wo') ?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Master Work Order</span></a>
-            </li>
+            </li> -->
 
-            <li class="nav-item <?= $aktif == 'pembelian' ? 'active' : '' ?>">
+         <!--   <li class="nav-item <?= $aktif == 'pembelian' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" id="droptog_approved1" data-target="#pembelian"
                     aria-expanded="false" aria-controls="pembelian">
                     <i class="fas fa-fw fa fa-list-alt"></i>
@@ -166,7 +166,6 @@
                           <a class="dropdown-item" href="<?= base_url('wo/fa_line1') ?>">FA</a>
                           <a class="dropdown-item" href="<?= base_url('wo/packing_line1') ?>">Packing</a>
                          
-                          <!--   <a class="dropdown-item" href="#">Link 3</a> -->
                     </div>
                   </div> 
                    <div class="dropdown dropright">
@@ -183,7 +182,6 @@
                           <a class="dropdown-item" href="<?= base_url('wo/fa_line2') ?>">FA</a>
                           <a class="dropdown-item" href="<?= base_url('wo/packing_line2') ?>">Packing</a>
 
-                          <!--   <a class="dropdown-item" href="#">Link 3</a> -->
                       </div>
                   </div> 
                    <div class="dropdown dropright">
@@ -199,7 +197,6 @@
                           <a class="dropdown-item" href="<?= base_url('wo/ps_line3') ?>">PS</a>
                           <a class="dropdown-item" href="<?= base_url('wo/fa_line3') ?>">FA</a>
                           <a class="dropdown-item" href="<?= base_url('wo/packing_line3') ?>">Packing</a>
-                          <!--   <a class="dropdown-item" href="#">Link 3</a> -->
                       </div>
                   </div> 
 
@@ -216,14 +213,14 @@
                     <a class="collapse-item" href="<?= base_url('wo/selesai') ?>">Selesai </a>
                     <a class="collapse-item" href="<?= base_url('wo/pesanan_dibatalkan') ?>">Dibatalkan </a> 
                  
-                  <!--  <a class="collapse-item" href="<?= base_url('wo/list_selesai') ?>">Riwayat Pesanan Pembelian </a> -->
-                 <!--   <a class="collapse-item" href="<?= base_url('wo/list_history_permintaan') ?>">Riwayat Permintaan Barang</a>
+                    <a class="collapse-item" href="<?= base_url('wo/list_selesai') ?>">Riwayat Pesanan Pembelian </a> 
+                    <a class="collapse-item" href="<?= base_url('wo/list_history_permintaan') ?>">Riwayat Permintaan Barang</a>
                     <a class="collapse-item" href="<?= base_url('wo/list_pesanan_pembelian_reject') ?>">Reject</a> 
                     <a class="collapse-item" href="<?= base_url('wo/laporan_01') ?>">Laporan</a>
-                  -->
+                  
                     </div>
                 </div>
-            </li>
+            </li> -->
 
 <!--
 			<li class="nav-item <?= $aktif == 'barang' ? 'active' : '' ?>">
@@ -391,7 +388,7 @@ setInterval(function(){
 
 <!--  Barang -->
 
-         <li class="nav-item <?= $aktif == 'barang' ? 'active' : '' ?>">
+       <!--  <li class="nav-item <?= $aktif == 'barang' ? 'active' : '' ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" id="droptog_approved1" data-target="#barang"
                     aria-expanded="false" aria-controls="barang">
                     <i class="fas fa-fw fa fa-list-alt"></i>
@@ -407,7 +404,7 @@ setInterval(function(){
                     <a class="collapse-item" href="<?= base_url('barang/item_selesai_forecast') ?>">Riwayat Forecast -> Stok </a>
                     </div>
                 </div>
-            </li>
+            </li>-->
 <!--  Jadwal Pengiriman 
 
          <li class="nav-item <?= $aktif == 'schedul_kirim' ? 'active' : '' ?>">

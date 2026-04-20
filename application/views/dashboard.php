@@ -54,7 +54,7 @@ document.getElementById("jam").innerHTML = tanggal.getHours()+":"+tanggal.getMin
                 <div class="container-fluid">
                     <div class="clearfix">
                         <div class="float-left">
-                            <h1 class="h3 m-0 text-gray-800"> Welcome To Alba</h1>
+                            <h1 class="h3 m-0 text-gray-800"> Welcome To Costumer Relationship Management</h1>
                         </div>
             <div class="float-right " id='jam'>
              
